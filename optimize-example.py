@@ -1,8 +1,8 @@
 import secretSanta.santaOptimizer as optimizer
 import secretSanta.santaSetup as setup
 
-historyFile     = 'exampleData-history.csv'
-exclusionsFile  = 'exclusions.csv'
+historyFile     = 'example-history.csv'
+exclusionsFile  = 'example-exclusions.csv'
 currentYear     = 2022
 gifts           = 2
 samples         = 10000

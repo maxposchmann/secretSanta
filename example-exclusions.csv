@@ -1,0 +1,16 @@
+People,,,,
+A,B,C,D,E
+B,C,D,E,A
+C,D,E,A,B
+D,E,A,B,C
+E,A,B,C,D
+F,G,,,
+G,F,,,
+H,I,,,
+I,H,,,
+J,K,,,
+K,J,,,
+L,M,,,
+M,L,,,
+N,O,,,
+O,N,,,
