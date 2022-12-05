@@ -5,7 +5,7 @@ import datetime
 
 year = datetime.date.today().year
 
-def optimize(people,history,exclusions,currentYear=year,gifts=1,samples=10,nonParticipants=[]):
+def optimize(people,history,exclusions,currentYear=year,gifts=1,samples=10,nonParticipants=[],hardExclusionYears=0):
     # Exclude people not participating this year
     for nonParticipant in nonParticipants:
         people.remove(nonParticipant)
@@ -15,12 +15,23 @@ def optimize(people,history,exclusions,currentYear=year,gifts=1,samples=10,nonPa
     for giver in people:
         recipients[giver] = people.copy()
         recipients[giver].remove(giver)
+        # Remove exclusions from valid list
         for exclusion in exclusions[giver]:
             try:
                 recipients[giver].remove(exclusion)
             except ValueError:
                 # Likely non-participant, possible duplicate
                 pass
+        # If hard exclusion for recipients from recent years specified, remove using history
+        if hardExclusionYears:
+            for person in history[giver].keys():
+                for y in history[giver][person]:
+                    if (currentYear - y) <= hardExclusionYears:
+                        try:
+                            recipients[giver].remove(person)
+                        except ValueError:
+                            # Likely non-participant or duplicate duplicate
+                            pass
 
     totalSamples = 0
     validSamples = 0
