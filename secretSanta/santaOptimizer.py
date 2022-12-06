@@ -16,22 +16,31 @@ def optimize(people,history,exclusions,currentYear=year,gifts=1,samples=10,nonPa
         recipients[giver] = people.copy()
         recipients[giver].remove(giver)
         # Remove exclusions from valid list
-        for exclusion in exclusions[giver]:
-            try:
-                recipients[giver].remove(exclusion)
-            except ValueError:
-                # Likely non-participant, possible duplicate
-                pass
+        if giver in exclusions.keys():
+            for exclusion in exclusions[giver]:
+                try:
+                    recipients[giver].remove(exclusion)
+                except ValueError:
+                    # Likely non-participant, possible duplicate
+                    pass
         # If hard exclusion for recipients from recent years specified, remove using history
         if hardExclusionYears:
-            for person in history[giver].keys():
-                for y in history[giver][person]:
-                    if (currentYear - y) <= hardExclusionYears:
-                        try:
-                            recipients[giver].remove(person)
-                        except ValueError:
-                            # Likely non-participant or duplicate duplicate
-                            pass
+            if giver in history.keys():
+                for person in history[giver].keys():
+                    for y in history[giver][person]:
+                        if (currentYear - y) <= hardExclusionYears:
+                            try:
+                                recipients[giver].remove(person)
+                            except ValueError:
+                                # Likely non-participant or duplicate duplicate
+                                pass
+
+    numberOfValidRecipients = []
+    for person in people:
+        numberOfValidRecipients.append(len(recipients[person]))
+    # Sort list by number of exclusions for better performance
+    people = [x for _,x in sorted(zip(numberOfValidRecipients, people))]
+    print(people)
 
     totalSamples = 0
     validSamples = 0
